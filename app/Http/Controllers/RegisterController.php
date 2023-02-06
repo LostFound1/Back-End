@@ -65,4 +65,44 @@ class RegisterController extends Controller
         return $this->sendResponse($success , 'Success Logout');
     }
 
+    public function getUsers() {
+        $users = User::all();
+        return response()->json($users);
+    }
+
+    public function getUser($id) {
+        $user = User::where('id' , $id)->get();
+        return response()->json($user);
+    }
+
+    public function updateInfo($id ,Request $request) {
+        // dd($request);
+        // return response()->json($id);
+        $user = User::find($id);
+
+        $user->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone' => $request->phone
+        ]);
+
+        $user->save();
+        $success['user'] = $user;
+        return $this->sendResponse($success, 'User Updated successfully.');
+    }
+
+    public function updateImage($id ,Request $request) {
+        // dd($request);
+        $user = User::find($id);
+        $user->update([
+            'image' => $request->image
+        ]);
+        // return response()->json($request->image);
+
+        $user->save();
+        $success['user'] = $user;
+        return $this->sendResponse($success, 'User Updated Image.');
+    }
+
 }

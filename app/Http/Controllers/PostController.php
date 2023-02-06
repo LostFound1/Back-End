@@ -16,8 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        // $posts = Post::where('status' , 1)->orderBy('DESC')->get();
-        $posts = Post::orderBy('DESC')->get();
+        $posts = Post::orderBy('time','DESC')->paginate(50);
         return response()->json($posts);
     }
 
@@ -40,26 +39,31 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'type' => 'required',
             'title' => 'required',
             'desc' => 'required',
             'city' => 'required',
             'location' => 'required',
             'type_place' => 'required',
             'category_id' => 'required',
-            'time' => 'required',
+            'user_id' => 'required'
         ]);
 
         $input = $request->all();
 
+        if($request->image) {
+            $input['image'] = $request->image;
+        }
+
         try {
 
-            $input['user_id'] = Auth::user()->id;
+            // $input['user_id'] = Auth::user()->id;
 
             $post = Post::create($input);
 
             $success['post'] = $post;
 
-            return $this->sendResponse($success, 'Add Post successfully.');
+            return $this->sendResponse($success, 'Add Post successfully.' , 201);
             
         } catch (Error $err) {
 

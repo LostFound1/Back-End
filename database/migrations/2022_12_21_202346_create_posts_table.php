@@ -15,12 +15,14 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->string('type');
             $table->string('title');
             $table->text('desc');
             $table->string('city');
             $table->string('location');
             $table->string('type_place');
             $table->dateTime('time');
+            $table->string('image');
             $table->foreignId('category_id')->constrained('categories');
             $table->foreignId('user_id')->constrained('users');
             $table->boolean('status')->default(0);

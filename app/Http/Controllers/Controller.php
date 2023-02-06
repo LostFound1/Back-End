@@ -11,7 +11,7 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function sendResponse($result, $message)
+    public function sendResponse($result, $message , $code = 200)
     {
     	$response = [
             'success' => true,
@@ -20,7 +20,7 @@ class Controller extends BaseController
         ];
 
 
-        return response()->json($response, 200);
+        return response()->json($response, $code);
     }
 
 
